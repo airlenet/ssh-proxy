@@ -17,7 +17,7 @@ public class PortForwardingService implements InitializingBean {
 
     public void portforwarding() throws Exception {
         if (!properties.isEnable()) {
-            logger.debug("PortForwarding {}", properties.isEnable());//是否启用端口转发
+            logger.info("PortForwarding {}", properties.isEnable());//是否启用端口转发
             return;
         }
         JSch jsch = new JSch();
@@ -28,7 +28,7 @@ public class PortForwardingService implements InitializingBean {
             session.setConfig("StrictHostKeyChecking", "no");
             // step1：建立ssh连接
             session.connect();
-            logger.debug("PortForwarding SSH Server Version={}", session.getServerVersion());//这里打印SSH服务器版本信息
+            logger.info("PortForwarding SSH Server Version={}", session.getServerVersion());//这里打印SSH服务器版本信息
             //step2：
             if ("local".equals(properties.getMode())) {
                 //设置SSH本地端口转发，本地转发到远程
