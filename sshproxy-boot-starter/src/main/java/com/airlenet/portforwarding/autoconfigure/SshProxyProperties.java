@@ -3,13 +3,13 @@ package com.airlenet.portforwarding.autoconfigure;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "airlenet.port-forwarding")
+@ConfigurationProperties(prefix = "airlenet.sshproxy")
 @Data
-public class PortForwardingProperties {
+public class SshProxyProperties {
     /**
      * 是否启用端口转发
      */
-    private boolean enable = true;
+    private boolean enable = false;
     /**
      * 端口转发模式，支持 local，remote 两种
      */
@@ -21,7 +21,7 @@ public class PortForwardingProperties {
     /**
      * SSH访问端口
      */
-    private int port;
+    private int port=22;
     /**
      * SSH连接用户名
      */

@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.airlenet.portforwarding</groupId>
-    <artifactId>portforwarding</artifactId>
+    <groupId>com.airlenet.sshproxy</groupId>
+    <artifactId>sshproxy</artifactId>
     <packaging>pom</packaging>
     <version>1.0.0</version>
-    <name>portforwarding</name>
-    <description>portforwarding over ssh for Spring Boot</description>
-
+    <name>ssh proxy</name>
+    <description>ssh proxy for Spring Boot</description>
+    <url>https://github.com/airlenet/ssh-proxy</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <encoding>UTF-8</encoding>
@@ -17,17 +17,54 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.timestamp>${timestamp}</project.build.timestamp>
         <druid.version>1.1.10</druid.version>
+        <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
     </properties>
     <modules>
-        <module>portforwarding-example</module>
-        <module>portforwarding-boot-starter</module>
+        <module>sshproxy-example</module>
+        <module>sshproxy-boot-starter</module>
     </modules>
-
-
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring-boot.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    <licenses>
+        <license>
+            <name>The Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <id>airlenet</id>
+            <name>airlenet</name>
+            <email>airlenet@163.com</email>
+        </developer>
+    </developers>
+    <organization>
+        <name>airlenet</name>
+        <url>http://www.airlenet.com</url>
+    </organization>
+    <scm>
+        <connection>
+            scm:git:https://github.com/airlenet/ssh-proxy.git
+        </connection>
+        <developerConnection>
+            https://github.com/airlenet/ssh-proxy.git
+        </developerConnection>
+        <url>https://github.com/airlenet/ssh-proxy</url>
+        <tag>HEAD</tag>
+    </scm>
     <repositories>
         <repository>
             <id>central</id>
-            <url>https://repo.maven.org/maven2/</url>
+            <url>https://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
             <snapshots>
@@ -38,44 +75,53 @@
             <url>https://repo.spring.io/libs-release</url>
         </repository>
         <repository>
-            <snapshots />
+            <snapshots/>
             <id>spring-libs-snapshots</id>
             <name>libs-snapshot</name>
             <url>https://repo.spring.io/libs-snapshot</url>
         </repository>
     </repositories>
-    <!--<pluginRepositories>-->
-        <!--<pluginRepository>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-            <!--<id>central</id>-->
-            <!--<name>plugins-maven2</name>-->
-            <!--<url>https://repo.maven.org/maven2</url>-->
-        <!--</pluginRepository>-->
-        <!--<pluginRepository>-->
-            <!--<snapshots>-->
-                <!--<enabled>false</enabled>-->
-            <!--</snapshots>-->
-            <!--<id>spring-central</id>-->
-            <!--<name>plugins-milestone</name>-->
-            <!--<url>https://repo.spring.io/plugins-milestone</url>-->
-        <!--</pluginRepository>-->
-        <!--<pluginRepository>-->
-            <!--<snapshots />-->
-            <!--<id>snapshots</id>-->
-            <!--<name>plugins-milestone</name>-->
-            <!--<url>https://repo.spring.io/plugins-milestone</url>-->
-        <!--</pluginRepository>-->
-    <!--</pluginRepositories>-->
-    <!--<build>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>org.springframework.boot</groupId>-->
-                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-    <!--</build>-->
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.4</version>
+                <executions>
+                    <execution>
+                        <id>generate-timestamp</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>create-timestamp</goal>
+                        </goals>
+                        <configuration>
+                            <timestampFormat>yyyy-MM-dd HH:mm:ss.SSSZ</timestampFormat>
+                            <timestampPropertyName>timestamp</timestampPropertyName>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.1</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
+                        </manifest>
+                        <manifestEntries>
+                            <Implementation-Title>sshproxy</Implementation-Title>
+                            <Implementation-Version>${project.version}</Implementation-Version>
+                            <Implementation-Build>${project.build.timestamp}</Implementation-Build>
+                            <Implementation-Vendor-Id>com.airlenet</Implementation-Vendor-Id>
+                            <Implementation-Vendor>Airlenet Group</Implementation-Vendor>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
     <profiles>
         <profile>
             <id>release</id>
@@ -105,6 +151,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -117,6 +164,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>2.9.1</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>

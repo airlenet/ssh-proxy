@@ -3,37 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>portforwarding</artifactId>
-        <groupId>com.airlenet.portforwarding</groupId>
+        <artifactId>sshproxy</artifactId>
+        <groupId>com.airlenet.sshproxy</groupId>
         <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>portforwarding-boot-starter</artifactId>
-    <properties>
-        <!--<spring-cloud.version>Greenwich.SR1</spring-cloud.version>-->
-        <!--<spring-boot.version>2.1.0.RELEASE</spring-boot.version>-->
-        <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
-        <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
-    </properties>
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring-boot.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
+    <artifactId>sshproxy-boot-starter</artifactId>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -82,24 +59,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>buildnumber-maven-plugin</artifactId>
-                <version>1.4</version>
-                <executions>
-                    <execution>
-                        <id>generate-timestamp</id>
-                        <phase>validate</phase>
-                        <goals>
-                            <goal>create-timestamp</goal>
-                        </goals>
-                        <configuration>
-                            <timestampFormat>yyyy-MM-dd HH:mm:ss.SSSZ</timestampFormat>
-                            <timestampPropertyName>timestamp</timestampPropertyName>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
                 <configuration>
@@ -108,7 +67,7 @@
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                         </manifest>
                         <manifestEntries>
-                            <Implementation-Title>netconf</Implementation-Title>
+                            <Implementation-Title>sshproxy</Implementation-Title>
                             <Implementation-Version>${project.version}</Implementation-Version>
                             <Implementation-Build>${project.build.timestamp}</Implementation-Build>
                             <Implementation-Vendor-Id>com.airlenet</Implementation-Vendor-Id>
